@@ -17,6 +17,14 @@ namespace CardGame
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
+            // Card myCard = new Card("A Spades");
+            //
+            // Console.WriteLine(myCard.GetDisplayName());
+            // myCard.FlipFaceUp();
+            // Console.WriteLine(myCard.GetDisplayName());
+            // myCard.FlipFaceDown();
+            // Console.WriteLine(myCard.GetDisplayName());
         }
     }
 }
