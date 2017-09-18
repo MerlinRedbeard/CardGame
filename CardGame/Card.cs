@@ -9,17 +9,22 @@ namespace CardGame
     class Card
     {
         private string displayName;
-        private bool isFaceUp;
+        public enum Face { FRONT, BACK };
+        private Face showing;
 
-        public Card(string newName)
+        public Card(string newName) : this(newName,Face.BACK)
+        {
+        }
+
+        public Card(string newName,Face toShow) 
         {
             displayName = newName;
-            isFaceUp = false;
+            showing = toShow;
         }
 
         public string GetDisplayName()
         {
-            if (isFaceUp)
+            if (showing == Face.FRONT)
             {
                 return displayName;
             }
@@ -29,14 +34,9 @@ namespace CardGame
             }
         }
      
-        public void FlipFaceUp()
+        public void SetFace(Face toShow)
         {
-            isFaceUp = true;
-        }
-
-        public void FlipFaceDown()
-        {
-            isFaceUp = false;
+            showing = toShow;
         }
 
     }
