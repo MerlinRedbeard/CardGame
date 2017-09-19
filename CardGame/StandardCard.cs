@@ -21,9 +21,13 @@ namespace CardGame
         {
         }
 
-        public StandardCard(int Value, Suit newSuit, Face setFace) : base(string.Concat(Value, " ", newSuit.ToString()), setFace)
+        public StandardCard(int value, Suit newSuit, Face setFace) : this(string.Concat(value, " ", newSuit.ToString()), value, newSuit, setFace)
         {
-            cardValue = Value;
+        }
+
+        public StandardCard(string setName, int value, Suit newSuit, Face setFace) : base(setName, setFace)
+        {
+            cardValue = value;
             cardSuit = newSuit;
         }
 

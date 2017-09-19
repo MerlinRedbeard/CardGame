@@ -46,20 +46,24 @@ namespace CardGame
         private static void StandardCardTest()
         {
             StandardCard defaultStandardCard = new StandardCard();//Why?
-            StandardCard myStandardCard = new StandardCard(1, StandardCard.Suit.CLUB);
+            StandardCard myStandardCard = new StandardCard(3, StandardCard.Suit.CLUB);
             StandardCard myStandardCard2 = new StandardCard(2, StandardCard.Suit.DIAMOND, Card.Face.FRONT);
+            StandardCard myStandardCard3 = new StandardCard("Ace Diamonds", 13, StandardCard.Suit.DIAMOND, Card.Face.FRONT);
 
             Console.WriteLine();
             Console.WriteLine("Standard Card Test...");
             Console.WriteLine("Default Card: {0}",defaultStandardCard.GetDisplayName());
             Console.WriteLine("myStandardCard: {0}", myStandardCard.GetDisplayName());
             Console.WriteLine("myStandardCard2: {0}", myStandardCard2.GetDisplayName());
+            Console.WriteLine("myStandardCard3: {0}", myStandardCard3.GetDisplayName());
             defaultStandardCard.SetFace(Card.Face.BACK);
             myStandardCard.SetFace(Card.Face.FRONT);
             myStandardCard2.SetFace(Card.Face.BACK);
+            myStandardCard3.SetFace(Card.Face.BACK);
             Console.WriteLine("Default Card flipped: {0}", defaultStandardCard.GetDisplayName());
             Console.WriteLine("myStandardCard flipped: {0}", myStandardCard.GetDisplayName());
             Console.WriteLine("myStandardCard2 flipped: {0}", myStandardCard2.GetDisplayName());
+            Console.WriteLine("myStandardCard3 flipped: {0}", myStandardCard3.GetDisplayName());
         }
 
         private static void DeckTest()
