@@ -12,6 +12,10 @@ namespace CardGame
         public enum Face { FRONT, BACK };
         private Face showing;
 
+        public Card() : this("",Face.FRONT)
+        {
+        }
+
         public Card(string newName) : this(newName,Face.BACK)
         {
         }
