@@ -21,11 +21,7 @@ namespace CardGame
         {
         }
 
-        public StandardCard(int value, Suit newSuit, Face setFace) : this(string.Concat(value, " ", newSuit.ToString()), value, newSuit, setFace)
-        {
-        }
-
-        public StandardCard(string setName, int value, Suit newSuit, Face setFace) : base(setName, setFace)
+        public StandardCard(int value, Suit newSuit, Face setFace) : base(CreateDisplayName(value,newSuit),setFace)
         {
             cardValue = value;
             cardSuit = newSuit;
@@ -34,5 +30,22 @@ namespace CardGame
         public int GetValue() => cardValue;
 
         public Suit GetSuit() => cardSuit;
+
+        private static string CreateDisplayName(int value, Suit cardSuit)
+        {
+            switch (value)
+            {
+                case 1:
+                    return string.Concat("A ", cardSuit.ToString());
+                case 11:
+                    return string.Concat("J ", cardSuit.ToString());
+                case 12:
+                    return string.Concat("Q ", cardSuit.ToString());
+                case 13:
+                    return string.Concat("K ", cardSuit.ToString());
+                default:
+                    return string.Concat(value, " ", cardSuit.ToString());
+            }
+        }
     }
 }

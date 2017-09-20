@@ -47,8 +47,10 @@ namespace CardGame
         {
             StandardCard defaultStandardCard = new StandardCard();//Why?
             StandardCard myStandardCard = new StandardCard(3, StandardCard.Suit.CLUB);
-            StandardCard myStandardCard2 = new StandardCard(2, StandardCard.Suit.DIAMOND, Card.Face.FRONT);
-            StandardCard myStandardCard3 = new StandardCard("Ace Diamonds", 13, StandardCard.Suit.DIAMOND, Card.Face.FRONT);
+            StandardCard myStandardCard2 = new StandardCard(1, StandardCard.Suit.DIAMOND, Card.Face.FRONT);
+            StandardCard myStandardCard3 = new StandardCard(11, StandardCard.Suit.HEART, Card.Face.FRONT);
+            StandardCard myStandardCard4 = new StandardCard(12, StandardCard.Suit.SPADE, Card.Face.FRONT);
+            StandardCard myStandardCard5 = new StandardCard(13, StandardCard.Suit.DIAMOND, Card.Face.FRONT);
 
             Console.WriteLine();
             Console.WriteLine("Standard Card Test...");
@@ -56,6 +58,8 @@ namespace CardGame
             Console.WriteLine("myStandardCard: {0}", myStandardCard.GetDisplayName());
             Console.WriteLine("myStandardCard2: {0}", myStandardCard2.GetDisplayName());
             Console.WriteLine("myStandardCard3: {0}", myStandardCard3.GetDisplayName());
+            Console.WriteLine("myStandardCard4: {0}", myStandardCard4.GetDisplayName());
+            Console.WriteLine("myStandardCard5: {0}", myStandardCard5.GetDisplayName());
             defaultStandardCard.SetFace(Card.Face.BACK);
             myStandardCard.SetFace(Card.Face.FRONT);
             myStandardCard2.SetFace(Card.Face.BACK);
@@ -63,7 +67,6 @@ namespace CardGame
             Console.WriteLine("Default Card flipped: {0}", defaultStandardCard.GetDisplayName());
             Console.WriteLine("myStandardCard flipped: {0}", myStandardCard.GetDisplayName());
             Console.WriteLine("myStandardCard2 flipped: {0}", myStandardCard2.GetDisplayName());
-            Console.WriteLine("myStandardCard3 flipped: {0}", myStandardCard3.GetDisplayName());
         }
 
         private static void DeckTest()
