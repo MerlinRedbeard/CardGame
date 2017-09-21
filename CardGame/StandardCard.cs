@@ -9,17 +9,14 @@ namespace CardGame
     class StandardCard : Card
     {
         private int cardValue;
-        public enum Suit {SPADE,HEART,DIAMOND,CLUB};
+        public enum Suit {SPADE,HEART,DIAMOND,CLUB,JOKER};
         private Suit cardSuit;
 
-        public StandardCard() : this(0,Suit.SPADE,Face.FRONT)
-        {
-            //program kept griping about not having a default constructor.  Should it have one?
-        }
+        public StandardCard() : this(Face.BACK) { }//Creates face-down Joker
 
-        public StandardCard(int Value, Suit newSuit) : this(Value, newSuit, Face.BACK)
-        {
-        }
+        public StandardCard(Card.Face setFace) : this(0, Suit.JOKER, setFace) { }//Creates Joker face up or down
+
+        public StandardCard(int Value, Suit newSuit) : this(Value, newSuit, Face.BACK) { }
 
         public StandardCard(int value, Suit newSuit, Face setFace) : base(CreateDisplayName(value,newSuit),setFace)
         {
@@ -35,6 +32,8 @@ namespace CardGame
         {
             switch (value)
             {
+                case 0:
+                    return "Joker";
                 case 1:
                     return string.Concat("A ", cardSuit.ToString());
                 case 11:

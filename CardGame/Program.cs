@@ -19,8 +19,9 @@ namespace CardGame
             //Application.Run(new Form1());
 
             //CardTest();
-            //StandardCardTest();
             //DeckTest();
+            //StandardCardTest();
+            //PokerDeckTest();
         }
 
         private static void CardTest()
@@ -45,7 +46,7 @@ namespace CardGame
 
         private static void StandardCardTest()
         {
-            StandardCard defaultStandardCard = new StandardCard();//Why?
+            StandardCard defaultStandardCard = new StandardCard();
             StandardCard myStandardCard = new StandardCard(3, StandardCard.Suit.CLUB);
             StandardCard myStandardCard2 = new StandardCard(1, StandardCard.Suit.DIAMOND, Card.Face.FRONT);
             StandardCard myStandardCard3 = new StandardCard(11, StandardCard.Suit.HEART, Card.Face.FRONT);
@@ -60,7 +61,7 @@ namespace CardGame
             Console.WriteLine("myStandardCard3: {0}", myStandardCard3.GetDisplayName());
             Console.WriteLine("myStandardCard4: {0}", myStandardCard4.GetDisplayName());
             Console.WriteLine("myStandardCard5: {0}", myStandardCard5.GetDisplayName());
-            defaultStandardCard.SetFace(Card.Face.BACK);
+            defaultStandardCard.SetFace(Card.Face.FRONT);
             myStandardCard.SetFace(Card.Face.FRONT);
             myStandardCard2.SetFace(Card.Face.BACK);
             myStandardCard3.SetFace(Card.Face.BACK);
@@ -106,6 +107,55 @@ namespace CardGame
                 Console.WriteLine("ERROR: Card Drawn from Empty Deck: {0}",test.GetDisplayName());//draw on empty deck test
             }
             Console.WriteLine();
+        }
+
+        private static void PokerDeckTest()
+        {
+            Console.WriteLine();
+            Console.Write("Poker Deck Test");
+
+            PokerDeck testPokerDeck = new PokerDeck("With Jokers", true);
+            PokerDeck testPokerDeck2 = new PokerDeck("Without Jokers", false);
+
+            Card[] jokerDeckCards = testPokerDeck.CardsInDeck();
+            Card[] noJokerCards = testPokerDeck2.CardsInDeck();
+
+            Console.WriteLine();
+            Console.WriteLine("Joker Deck...");
+            foreach (Card jokerCard in jokerDeckCards)
+            {
+                jokerCard.SetFace(Card.Face.FRONT);
+                Console.WriteLine(jokerCard.GetDisplayName());
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("No Joker Deck...");
+            foreach (Card notJokerCard in noJokerCards)
+            {
+                notJokerCard.SetFace(Card.Face.FRONT);
+                Console.WriteLine(notJokerCard.GetDisplayName());
+            }
+
+            testPokerDeck.Shuffle();
+            testPokerDeck2.Shuffle();
+            jokerDeckCards = testPokerDeck.CardsInDeck();
+            noJokerCards = testPokerDeck2.CardsInDeck();
+
+            Console.WriteLine();
+            Console.WriteLine("Joker Deck Shuffled...");
+            foreach (Card jokerCard in jokerDeckCards)
+            {
+                jokerCard.SetFace(Card.Face.FRONT);
+                Console.WriteLine(jokerCard.GetDisplayName());
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("No Joker Deck Shuffled...");
+            foreach (Card notJokerCard in noJokerCards)
+            {
+                notJokerCard.SetFace(Card.Face.FRONT);
+                Console.WriteLine(notJokerCard.GetDisplayName());
+            }
         }
 
         private static void DisplayDeck(Deck toDisplay)
