@@ -20,6 +20,7 @@ namespace CardGame
 
             //CardTest();
             //DeckTest();
+            //HandTest();
             //StandardCardTest();
             //PokerDeckTest();
         }
@@ -32,16 +33,21 @@ namespace CardGame
 
             Console.WriteLine();
             Console.WriteLine("Basic Card Test...");
-            Console.WriteLine("Default Card: {0}",defaultCard.GetDisplayName());
-            defaultCard.SetFace(Card.Face.BACK);
-            Console.WriteLine("Default Card: {0}", defaultCard.GetDisplayName());
-            Console.WriteLine("myCard: {0}", myCard.GetDisplayName());
-            Console.WriteLine("myCard2: {0}", myCard2.GetDisplayName());
-            myCard.SetFace(Card.Face.FRONT);
-            Console.WriteLine("myCard: {0}", myCard.GetDisplayName());
-            myCard2.SetFace(Card.Face.BACK);
-            Console.WriteLine("myCard2: {0}", myCard2.GetDisplayName());
             Console.WriteLine();
+            Console.WriteLine("Face Up Default Card: {0}",defaultCard.GetVisibleDisplayName());
+            defaultCard.SetFace(Card.Face.BACK);
+            Console.WriteLine("Facedown Default Card: {0}", defaultCard.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name Default Card: {0}", defaultCard.GetDisplayName());
+            Console.WriteLine();
+            Console.WriteLine("Facedown myCard: {0}", myCard.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name myCard: {0}", myCard.GetDisplayName());
+            myCard.SetFace(Card.Face.FRONT);
+            Console.WriteLine("Faceup myCard: {0}", myCard.GetVisibleDisplayName());
+            Console.WriteLine();
+            Console.WriteLine("Faceup myCard2: {0}", myCard2.GetVisibleDisplayName());
+            myCard2.SetFace(Card.Face.BACK);
+            Console.WriteLine("Facedown myCard2: {0}", myCard2.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name myCard2: {0}", myCard2.GetDisplayName());
         }
 
         private static void StandardCardTest()
@@ -55,19 +61,86 @@ namespace CardGame
 
             Console.WriteLine();
             Console.WriteLine("Standard Card Test...");
-            Console.WriteLine("Default Card: {0}",defaultStandardCard.GetDisplayName());
-            Console.WriteLine("myStandardCard: {0}", myStandardCard.GetDisplayName());
-            Console.WriteLine("myStandardCard2: {0}", myStandardCard2.GetDisplayName());
-            Console.WriteLine("myStandardCard3: {0}", myStandardCard3.GetDisplayName());
-            Console.WriteLine("myStandardCard4: {0}", myStandardCard4.GetDisplayName());
-            Console.WriteLine("myStandardCard5: {0}", myStandardCard5.GetDisplayName());
+
+            Console.WriteLine();
+            Console.WriteLine("Default Card: {0}",defaultStandardCard.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name Default Card: {0}", defaultStandardCard.GetDisplayName());
             defaultStandardCard.SetFace(Card.Face.FRONT);
+            Console.WriteLine("Default Card flipped: {0}", defaultStandardCard.GetVisibleDisplayName());
+
+            Console.WriteLine();
+            Console.WriteLine("myStandardCard: {0}", myStandardCard.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name myStandardCard: {0}", myStandardCard.GetDisplayName());
             myStandardCard.SetFace(Card.Face.FRONT);
+            Console.WriteLine("myStandardCard flipped: {0}", myStandardCard.GetVisibleDisplayName());
+
+            Console.WriteLine();
+            Console.WriteLine("myStandardCard2: {0}", myStandardCard2.GetVisibleDisplayName());
             myStandardCard2.SetFace(Card.Face.BACK);
+            Console.WriteLine("myStandardCard2 flipped: {0}", myStandardCard2.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name myStandardCard2: {0}", myStandardCard2.GetDisplayName());
+
+            Console.WriteLine();
+            Console.WriteLine("myStandardCard3: {0}", myStandardCard3.GetVisibleDisplayName());
             myStandardCard3.SetFace(Card.Face.BACK);
-            Console.WriteLine("Default Card flipped: {0}", defaultStandardCard.GetDisplayName());
-            Console.WriteLine("myStandardCard flipped: {0}", myStandardCard.GetDisplayName());
-            Console.WriteLine("myStandardCard2 flipped: {0}", myStandardCard2.GetDisplayName());
+            Console.WriteLine("myStandardCard3 flipped: {0}", myStandardCard3.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name myStandardCard3: {0}", myStandardCard3.GetDisplayName());
+
+            Console.WriteLine();
+            Console.WriteLine("myStandardCard4: {0}", myStandardCard4.GetVisibleDisplayName());
+            myStandardCard4.SetFace(Card.Face.BACK);
+            Console.WriteLine("myStandardCard4 flipped: {0}", myStandardCard4.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name myStandardCard4: {0}", myStandardCard4.GetDisplayName());
+
+            Console.WriteLine();
+            Console.WriteLine("myStandardCard5: {0}", myStandardCard5.GetVisibleDisplayName());
+            myStandardCard5.SetFace(Card.Face.BACK);
+            Console.WriteLine("myStandardCard5 flipped: {0}", myStandardCard5.GetVisibleDisplayName());
+            Console.WriteLine("Forced Name myStandardCard5: {0}", myStandardCard5.GetDisplayName());
+        }
+
+        private static void HandTest()
+        {
+            Hand defaultHand = new Hand();
+            Hand hand1 = new Hand("hand1");
+            Card[] testCards = new Card[5];
+            for(int i = 0; i < 5; i++)
+            {
+                testCards[i] = new Card(Convert.ToString(i));
+            }
+            Hand hand2 = new Hand("hand2", testCards);
+            for (int i = 0; i < 5; i++)
+            {
+                testCards[i] = new StandardCard(i, (StandardCard.Suit)i);
+            }
+            Hand hand3 = new Hand("hand3", testCards);
+            DisplayCards(defaultHand);
+
+            DisplayCards(hand1);
+            Console.WriteLine("Adding Card to Hand...");
+            hand1.addToHand(testCards[0]);
+            DisplayCards(hand1);
+            Console.WriteLine("Removing Card from Hand...");
+            try
+            {
+                hand1.removeFromHand(testCards[0]);
+            }
+            catch (CardNotFoundException e)
+            {
+                Console.WriteLine("ERROR: {0} not found", e.Message);
+            }
+            Console.WriteLine("Removing Card from empty Hand...");
+            try
+            {
+                hand1.removeFromHand(testCards[0]);
+            }
+            catch(CardNotFoundException e)
+            {
+                Console.WriteLine("SUCCESS: {0} not found", e.Message);
+            }
+
+            DisplayCards(hand2);
+            DisplayCards(hand3);
         }
 
         private static void DeckTest()
@@ -85,17 +158,17 @@ namespace CardGame
 
             Console.WriteLine("Shuffle Deck...");
             myDeck.Shuffle();//test shuffle method
-            DisplayDeck(myDeck);//prove shuffle worked. Started as 0-9
+            DisplayCards(myDeck);//prove shuffle worked. Started as 0-9
             Console.WriteLine("Add Card to Deck...");
             myDeck.AddToDeck(new Card("This is a Test Card",Card.Face.FRONT));
 
             Console.WriteLine("Display top Card");
-            Console.WriteLine(myDeck.Display().GetDisplayName());
+            Console.WriteLine(myDeck.Display().GetVisibleDisplayName());
 
             Console.WriteLine("Draw Cards...");
             for (int i = 0; i < 11; i++)
             {
-                Console.WriteLine("Card {0}: {1}",i+1,myDeck.DrawTopCard().GetDisplayName());//print card drawn
+                Console.WriteLine("Card {0}: {1}",i+1,myDeck.DrawTopCard().GetVisibleDisplayName());//print card drawn
             }
             Console.WriteLine();
             Console.WriteLine("Shuffle Empty Deck...");
@@ -104,9 +177,8 @@ namespace CardGame
             Console.WriteLine("Draw from Empty Deck...");
             if ((test = myDeck.DrawTopCard()) != null)
             {
-                Console.WriteLine("ERROR: Card Drawn from Empty Deck: {0}",test.GetDisplayName());//draw on empty deck test
+                Console.WriteLine("ERROR: Card Drawn from Empty Deck: {0}",test.GetVisibleDisplayName());//draw on empty deck test
             }
-            Console.WriteLine();
         }
 
         private static void PokerDeckTest()
@@ -114,58 +186,51 @@ namespace CardGame
             Console.WriteLine();
             Console.Write("Poker Deck Test");
 
-            PokerDeck testPokerDeck = new PokerDeck("With Jokers", true);
-            PokerDeck testPokerDeck2 = new PokerDeck("Without Jokers", false);
-
-            Card[] jokerDeckCards = testPokerDeck.CardsInDeck();
-            Card[] noJokerCards = testPokerDeck2.CardsInDeck();
+            PokerDeck testPokerDeck = new PokerDeck("With Jokers", true, Card.Face.FRONT);
+            PokerDeck testPokerDeck2 = new PokerDeck("Without Jokers", false, Card.Face.FRONT);
 
             Console.WriteLine();
             Console.WriteLine("Joker Deck...");
-            foreach (Card jokerCard in jokerDeckCards)
-            {
-                jokerCard.SetFace(Card.Face.FRONT);
-                Console.WriteLine(jokerCard.GetDisplayName());
-            }
+            DisplayCards(testPokerDeck);
 
             Console.WriteLine();
             Console.WriteLine("No Joker Deck...");
-            foreach (Card notJokerCard in noJokerCards)
-            {
-                notJokerCard.SetFace(Card.Face.FRONT);
-                Console.WriteLine(notJokerCard.GetDisplayName());
-            }
+            DisplayCards(testPokerDeck2);
 
             testPokerDeck.Shuffle();
             testPokerDeck2.Shuffle();
-            jokerDeckCards = testPokerDeck.CardsInDeck();
-            noJokerCards = testPokerDeck2.CardsInDeck();
 
             Console.WriteLine();
             Console.WriteLine("Joker Deck Shuffled...");
-            foreach (Card jokerCard in jokerDeckCards)
-            {
-                jokerCard.SetFace(Card.Face.FRONT);
-                Console.WriteLine(jokerCard.GetDisplayName());
-            }
+            DisplayCards(testPokerDeck);
 
             Console.WriteLine();
             Console.WriteLine("No Joker Deck Shuffled...");
-            foreach (Card notJokerCard in noJokerCards)
-            {
-                notJokerCard.SetFace(Card.Face.FRONT);
-                Console.WriteLine(notJokerCard.GetDisplayName());
-            }
+            DisplayCards(testPokerDeck2);
         }
 
-        private static void DisplayDeck(Deck toDisplay)
+        private static void DisplayCards(Deck toDisplay) => DisplayCards(toDisplay.GetType().Name, toDisplay.CardsInDeck(), toDisplay.GetDisplayName());
+
+        private static void DisplayCards(Hand toDisplay) => DisplayCards(toDisplay.GetType().Name, toDisplay.CardsInHand(), toDisplay.Name);
+
+        private static void DisplayCards(string cardCollectionType,Card[] cardsToDisplay,string toDisplay)
         {
             Console.WriteLine();
-            Card[] cardsToDisplay = toDisplay.CardsInDeck();
-            Console.Write("Deck {0}: ", toDisplay.GetDisplayName());
+            Console.WriteLine("{0} {1}: ", cardCollectionType,toDisplay);
+            int i = 0;
             foreach(Card toShow in cardsToDisplay)
             {
-                Console.Write("{0} ",toShow.GetDisplayName());
+                if (i < 11)
+                {
+                    Console.Write("{0}, ", toShow.GetVisibleDisplayName());
+                    i++;
+                }
+                else
+                {
+                    Console.WriteLine("{0}, ", toShow.GetVisibleDisplayName());
+                    i = 0;
+                }
+                
             }
             Console.WriteLine();
         }

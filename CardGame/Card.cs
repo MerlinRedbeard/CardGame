@@ -12,7 +12,7 @@ namespace CardGame
         public enum Face { FRONT, BACK };
         private Face showing;
 
-        public Card() : this("",Face.FRONT) { }
+        public Card() : this("Default Card Text",Face.FRONT) { }
 
         public Card(string newName) : this(newName,Face.BACK) { }
 
@@ -23,6 +23,11 @@ namespace CardGame
         }
 
         public string GetDisplayName()
+        {
+            return displayName;
+        }
+
+        public string GetVisibleDisplayName()
         {
             if (showing == Face.FRONT)
             {

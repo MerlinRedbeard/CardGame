@@ -8,21 +8,23 @@ namespace CardGame
 {
     class PokerDeck : Deck
     {
-        private LinkedList<Card> deck;
-        private string displayName;
 
         public PokerDeck(string addDisplayName) : this(addDisplayName, false) { }
 
-        public PokerDeck(string addDisplayName, bool addJokers) : base(addDisplayName, createStandardDeck(addJokers)) { }
+        public PokerDeck(string addDisplayName, bool addJokers) : this(addDisplayName, addJokers, Card.Face.BACK) { }
 
-        private static Card[] createStandardDeck(bool addJokers)
+        public PokerDeck(string addDisplayName, Card.Face showing) : this(addDisplayName, false, showing) { }
+
+        public PokerDeck(string addDisplayName, bool addJokers, Card.Face showing) : base(addDisplayName, createStandardDeck(addJokers,showing)) { }
+
+        private static Card[] createStandardDeck(bool addJokers,Card.Face showing)
         {
             Card[] cardsToAdd;
             if (addJokers)
             {
                 cardsToAdd = new Card[54];
-                cardsToAdd[52] = new StandardCard();
-                cardsToAdd[53] = new StandardCard();
+                cardsToAdd[52] = new StandardCard(showing);
+                cardsToAdd[53] = new StandardCard(showing);
             } else
             {
                 cardsToAdd = new Card[52];
@@ -30,10 +32,10 @@ namespace CardGame
             
             for (int i = 0; i < 13; i++)
             {
-                cardsToAdd[(i * 4)] = new StandardCard(i + 1, StandardCard.Suit.CLUB);
-                cardsToAdd[(i * 4) + 1] = new StandardCard(i + 1, StandardCard.Suit.DIAMOND);
-                cardsToAdd[(i * 4) + 2] = new StandardCard(i + 1, StandardCard.Suit.HEART);
-                cardsToAdd[(i * 4) + 3] = new StandardCard(i + 1, StandardCard.Suit.SPADE);
+                cardsToAdd[(i * 4)] = new StandardCard(i + 1, StandardCard.Suit.CLUB, showing);
+                cardsToAdd[(i * 4) + 1] = new StandardCard(i + 1, StandardCard.Suit.DIAMOND, showing);
+                cardsToAdd[(i * 4) + 2] = new StandardCard(i + 1, StandardCard.Suit.HEART, showing);
+                cardsToAdd[(i * 4) + 3] = new StandardCard(i + 1, StandardCard.Suit.SPADE, showing);
             }
 
             return cardsToAdd;
