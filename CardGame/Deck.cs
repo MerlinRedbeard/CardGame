@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardGame
 {
-    class Deck
+    class Deck : CardCollection
     {
         private string displayName;
         private LinkedList<Card> cards;
@@ -31,44 +31,67 @@ namespace CardGame
             cards = new LinkedList<Card>(temp);
         }
 
-        public Card DrawTopCard()
+        public virtual Card DrawTopCard()
         {
-            if (cards.Count != 0)
+            try
             {
                 Card topCard = cards.First<Card>();
-                cards.RemoveFirst();
+                this.RemoveFromCollection(topCard);
                 return topCard;
             }
-            else
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (CardNotFoundException e)
+            {
+                return null;
+            }
+            catch (System.InvalidOperationException f)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
                 return null;
             }
         }
-
-        public Card[] CardsInDeck()
-        {
-            Card[] temp = new Card[cards.Count];
-            cards.CopyTo(temp, 0);
-            return temp;
-        }
-
-        public string GetDisplayName()
+        
+        public override string GetDisplayName()
         {
             return displayName;
         }
 
-        public void AddToDeck(Card cardToAdd)//Adding card to top of deck for purpose of discard pile(s)
-        {
-            cards.AddFirst(cardToAdd);
-        }
-
-        public Card Display()//returns top card of deck for display purposes
+        public override Card Display()
         {
             if (cards.Count > 0)
             {
                 return cards.First<Card>();
             }
             return null;
+        }
+
+        public override void AddToCollection(Card toAdd)
+        {
+            cards.AddFirst(toAdd);
+        }
+
+        public override void RemoveFromCollection(Card toRemove)
+        {
+            if (cards.Count > 0)
+            {
+                cards.Remove(toRemove);
+            }
+            else
+            {
+                throw new CardNotFoundException(toRemove);
+            }
+        }
+
+        public override Card[] CardsInCollection()
+        {
+            Card[] temp = new Card[cards.Count];
+            cards.CopyTo(temp, 0);
+            return temp;
+        }
+
+        public override int NumCardsInCollection()
+        {
+            return cards.Count;
         }
     }
 }

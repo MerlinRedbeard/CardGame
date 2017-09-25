@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Card.cs" />
+    <Compile Include="CardCollection.cs" />
     <Compile Include="CardNotFoundException.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Form1.cs">

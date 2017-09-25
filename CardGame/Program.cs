@@ -118,12 +118,12 @@ namespace CardGame
 
             DisplayCards(hand1);
             Console.WriteLine("Adding Card to Hand...");
-            hand1.addToHand(testCards[0]);
+            hand1.AddToCollection(testCards[0]);
             DisplayCards(hand1);
             Console.WriteLine("Removing Card from Hand...");
             try
             {
-                hand1.removeFromHand(testCards[0]);
+                hand1.RemoveFromCollection(testCards[0]);
             }
             catch (CardNotFoundException e)
             {
@@ -132,7 +132,7 @@ namespace CardGame
             Console.WriteLine("Removing Card from empty Hand...");
             try
             {
-                hand1.removeFromHand(testCards[0]);
+                hand1.RemoveFromCollection(testCards[0]);
             }
             catch(CardNotFoundException e)
             {
@@ -160,7 +160,7 @@ namespace CardGame
             myDeck.Shuffle();//test shuffle method
             DisplayCards(myDeck);//prove shuffle worked. Started as 0-9
             Console.WriteLine("Add Card to Deck...");
-            myDeck.AddToDeck(new Card("This is a Test Card",Card.Face.FRONT));
+            myDeck.AddToCollection(new Card("This is a Test Card",Card.Face.FRONT));
 
             Console.WriteLine("Display top Card");
             Console.WriteLine(myDeck.Display().GetVisibleDisplayName());
@@ -208,16 +208,13 @@ namespace CardGame
             Console.WriteLine("No Joker Deck Shuffled...");
             DisplayCards(testPokerDeck2);
         }
-
-        private static void DisplayCards(Deck toDisplay) => DisplayCards(toDisplay.GetType().Name, toDisplay.CardsInDeck(), toDisplay.GetDisplayName());
-
-        private static void DisplayCards(Hand toDisplay) => DisplayCards(toDisplay.GetType().Name, toDisplay.CardsInHand(), toDisplay.Name);
-
-        private static void DisplayCards(string cardCollectionType,Card[] cardsToDisplay,string toDisplay)
+        
+        private static void DisplayCards(CardCollection toDisplay)
         {
             Console.WriteLine();
-            Console.WriteLine("{0} {1}: ", cardCollectionType,toDisplay);
+            Console.WriteLine("{0} {1}: ", toDisplay.GetType().Name,toDisplay.GetDisplayName());
             int i = 0;
+            Card[] cardsToDisplay = toDisplay.CardsInCollection();
             foreach(Card toShow in cardsToDisplay)
             {
                 if (i < 11)
