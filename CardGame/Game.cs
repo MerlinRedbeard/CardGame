@@ -10,15 +10,20 @@ namespace CardGame
     {
         private string rules;
         private string gameName;
-        private List<Player> players;
-        private Deck gameDeck;
+        protected List<Player> players;
+        protected List<Deck> gameDecks;
 
-        protected Game(string RulesToDisplay, string GameName, Player[] PlayersToAdd, Deck GameDeck)
+        public string GameName { get => gameName; }
+
+        public Game(string GameName, string RulesToDisplay)
         {
             rules = RulesToDisplay;
             gameName = GameName;
-            players = new List<Player>(PlayersToAdd);
-            gameDeck = GameDeck;
+        }
+
+        public virtual void AddNewDeck(Deck newDeck)
+        {
+            gameDecks.Add(newDeck);
         }
 
         public virtual void AddPlayer(Player toAdd)
@@ -40,7 +45,7 @@ namespace CardGame
         /// <summary>
         /// Displays current game configuration, including additional options selected
         /// </summary>
-        public abstract void DisplayConfig();
+        public abstract string DisplayConfig();
 
         /// <summary>
         /// Plays game with current configuration/players
