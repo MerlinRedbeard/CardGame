@@ -9,7 +9,7 @@ namespace CardGame
     class Deck : CardCollection
     {
         private string displayName;
-        private LinkedList<Card> cards;
+        protected LinkedList<Card> cards;
 
         public Deck(string addDisplayName, Card[] addCards)
         {
@@ -45,12 +45,12 @@ namespace CardGame
                 return null;
             }
             catch (System.InvalidOperationException f)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 return null;
             }
+#pragma warning restore CS0168 // Variable is declared but never used
         }
-        
+
         public override string GetDisplayName()
         {
             return displayName;
