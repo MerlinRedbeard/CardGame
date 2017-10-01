@@ -19,33 +19,33 @@ namespace CardGame
             playerCards.Add(startingCards);
         }
 
-        public void setName(String newName)
+        public void SetName(String newName)
         {
             name = newName;
         }
 
-        public String getName()
+        public String GetName()
         {
             return name;
         }
 
-        public void setPlayerCollection(CardCollection newCollection)
+        public void SetPlayerCollection(CardCollection newCollection)
         {
             playerCards = new List<CardCollection>();
             playerCards.Add(newCollection);
         }
 
-        public void addPlayerCollection(CardCollection newCollection)
+        public void AddPlayerCollection(CardCollection newCollection)
         {
             playerCards.Add(newCollection);
         }
 
-        public CardCollection getPlayerCollection()
+        public CardCollection GetPlayerCollection()
         {
             return playerCards[0];
         }
 
-        public CardCollection getPlayerCollection(string collectionName)
+        public CardCollection GetPlayerCollection(string collectionName)
         {
             foreach (CardCollection hand in playerCards)
             {
@@ -57,18 +57,19 @@ namespace CardGame
 
             throw new Exception(message: "Player " + name + " does not have a collection of cards named " + collectionName);
         }
-        public void addToPlayerCards(Card newCard)
+
+        public void AddToPlayerCollection(Card newCard)
         {
             playerCards[0].AddToCollection(newCard);
         }
 
-        public void AddToPlayerCards(Card newCard, string collectionName)
+        public void AddToPlayerCollection(Card newCard, string collectionName)
         {
             CardCollection hold;
 
             try
             {
-                hold = getPlayerCollection(collectionName);
+                hold = GetPlayerCollection(collectionName);
                 hold.AddToCollection(newCard);
             }
             catch (Exception e)

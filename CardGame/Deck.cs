@@ -102,9 +102,14 @@ namespace CardGame
         {
             Card[] newCards = newCollection.CardsInCollection();
 
-            for (int i = 0; i < newCollection.NumCardsInCollection(); i++)
+            AddToCollectBottom(newCards);
+        }
+
+        virtual public void AddToCollectBottom(Card[] newCards)
+        {
+            for (int i = 0; i < newCards.Length; i++)
             {
-                this.AddToBottom(newCards[i]);
+                AddToBottom(newCards[i]);
             }
         }
 

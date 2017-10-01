@@ -24,7 +24,16 @@ namespace CardGame
         {
             Card[] newCards = newCollection.CardsInCollection();
 
-            for (int i = 0; i < newCollection.NumCardsInCollection(); i++)
+            AddToCollection(newCards);
+        }
+
+        /// <summary>
+        /// Add all of the cards in a Card array to the current CardCollection.
+        /// </summary>
+        /// <param name="newCollection"></param>
+        virtual public void AddToCollection(Card[] newCards)
+        {
+            for (int i = 0; i < newCards.Length; i++)
             {
                 this.AddToCollection(newCards[i]);
             }
@@ -65,7 +74,7 @@ namespace CardGame
         /// Returns True if the collection is empty.
         /// </summary>
         /// <returns></returns>
-        public virtual bool isEmpty()
+        public virtual bool IsEmpty()
         {
             if (NumCardsInCollection() == 0)
             {

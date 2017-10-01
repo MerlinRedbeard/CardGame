@@ -15,9 +15,9 @@ namespace CardGame
 
         public PokerDeck(string addDisplayName, Card.Face showing) : this(addDisplayName, false, showing) { }
 
-        public PokerDeck(string addDisplayName, bool addJokers, Card.Face showing) : base(addDisplayName, createStandardDeck(addJokers,showing)) { }
+        public PokerDeck(string addDisplayName, bool addJokers, Card.Face showing) : base(addDisplayName, CreateStandardDeck(addJokers,showing)) { }
 
-        private static Card[] createStandardDeck(bool addJokers,Card.Face showing)
+        private static Card[] CreateStandardDeck(bool addJokers,Card.Face showing)
         {
             Card[] cardsToAdd;
             if (addJokers)

@@ -268,7 +268,7 @@ namespace CardGame
 
             try
             {
-                myPlayer.getPlayerCollection("notfound");
+                myPlayer.GetPlayerCollection("notfound");
             }
             catch(Exception e)
             {
