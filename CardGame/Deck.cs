@@ -98,14 +98,14 @@ namespace CardGame
         /// Add all of the cards in a CardCollection to the bottom of this CardCollection.
         /// </summary>
         /// <param name="newCollection"></param>
-        virtual public void AddToCollectionBottom(CardCollection newCollection)
+        virtual public void AddToBottom(CardCollection newCollection)
         {
             Card[] newCards = newCollection.CardsInCollection();
 
-            AddToCollectBottom(newCards);
+            AddToBottom(newCards);
         }
 
-        virtual public void AddToCollectBottom(Card[] newCards)
+        virtual public void AddToBottom(Card[] newCards)
         {
             for (int i = 0; i < newCards.Length; i++)
             {
