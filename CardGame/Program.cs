@@ -23,6 +23,9 @@ namespace CardGame
             //HandTest();
             //StandardCardTest();
             //PokerDeckTest();
+            //TestOutKeyword();
+            //HandNotFound();
+
         }
 
         private static void CardTest()
@@ -236,6 +239,42 @@ namespace CardGame
                 
             }
             Console.WriteLine();
+        }
+
+        private static void TestOutKeyword()
+        {
+            CardCollection myHand = new Hand();
+            myHand.AddToCollection(new Card("card 1"));
+            myHand.AddToCollection(new Card("card 2"));
+
+            TestOut(ref myHand);
+
+            Card[] cardArray = myHand.CardsInCollection();
+
+            foreach (Card asdf in cardArray)
+            {
+                Console.WriteLine(asdf.GetDisplayName());
+            }
+        }
+
+        private static void TestOut(ref CardCollection cardsWon)
+        {
+            cardsWon.AddToCollection(new Card("card 3"));
+        }
+
+        private static void HandNotFound()
+        {
+            Player myPlayer = new Player("Me", new Deck("deckname", new Card[0]));
+
+            try
+            {
+                myPlayer.getPlayerCollection("notfound");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("The deck was not found");
+            }
         }
     }
 }

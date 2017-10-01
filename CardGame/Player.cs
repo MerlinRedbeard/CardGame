@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CardGame
 {
     class Player
     {
         private string name;
-        private CardCollection playerCards;
-
-        // Making this public, because outside sources will need to add cards to this collection?
-        // Or is encapsulation more important?  If so, then we could make new methods in Player.cs 
-        // to call the various methods of their CardCollection? (seems redundant to me at the moment)
-
-        // private CardCollection playerCards;
-        // public CardCollection PlayerCards { get => playerCards; set => playerCards = value; }
+        private List<CardCollection> playerCards;
 
         public Player() : this(string.Concat("Player ", DateTime.Now.Ticks.ToString("####"))) { }
 
@@ -25,7 +15,8 @@ namespace CardGame
         public Player(string newName, CardCollection startingCards)
         {
             name = newName;
-            playerCards = startingCards;
+            playerCards = new List<CardCollection>();
+            playerCards.Add(startingCards);
         }
 
         public void setName(String newName)
@@ -38,19 +29,52 @@ namespace CardGame
             return name;
         }
 
-        public void setPlayerCards(CardCollection newCollection)
+        public void setPlayerCollection(CardCollection newCollection)
         {
-            playerCards = newCollection;
+            playerCards = new List<CardCollection>();
+            playerCards.Add(newCollection);
         }
 
-        public CardCollection getPlayerCards()
+        public void addPlayerCollection(CardCollection newCollection)
         {
-            return playerCards;
+            playerCards.Add(newCollection);
         }
 
+        public CardCollection getPlayerCollection()
+        {
+            return playerCards[0];
+        }
+
+        public CardCollection getPlayerCollection(string collectionName)
+        {
+            foreach (CardCollection hand in playerCards)
+            {
+                if (hand.GetDisplayName() == collectionName)
+                {
+                    return hand;
+                }
+            }
+
+            throw new Exception(message: "Player " + name + " does not have a collection of cards named " + collectionName);
+        }
         public void addToPlayerCards(Card newCard)
         {
-            playerCards.AddToCollection(newCard);
+            playerCards[0].AddToCollection(newCard);
+        }
+
+        public void AddToPlayerCards(Card newCard, string collectionName)
+        {
+            CardCollection hold;
+
+            try
+            {
+                hold = getPlayerCollection(collectionName);
+                hold.AddToCollection(newCard);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
