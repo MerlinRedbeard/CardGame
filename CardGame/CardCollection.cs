@@ -16,6 +16,10 @@ namespace CardGame
         /// <param name="toAdd"></param>
         abstract public void AddToCollection(Card toAdd);
 
+        /// <summary>
+        /// Add all of the cards in a CardCollection to the current CardCollection.
+        /// </summary>
+        /// <param name="newCollection"></param>
         virtual public void AddToCollection(CardCollection newCollection)
         {
             Card[] newCards = newCollection.CardsInCollection();
