@@ -9,11 +9,12 @@ namespace CardGame
     class Player
     {
         private string name;
-        public CardCollection playerCards;
+        private CardCollection playerCards;
+
         // Making this public, because outside sources will need to add cards to this collection?
         // Or is encapsulation more important?  If so, then we could make new methods in Player.cs 
         // to call the various methods of their CardCollection? (seems redundant to me at the moment)
-        
+
         // private CardCollection playerCards;
         // public CardCollection PlayerCards { get => playerCards; set => playerCards = value; }
 
@@ -27,5 +28,29 @@ namespace CardGame
             playerCards = startingCards;
         }
 
+        public void setName(String newName)
+        {
+            name = newName;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public void setPlayerCards(CardCollection newCollection)
+        {
+            playerCards = newCollection;
+        }
+
+        public CardCollection getPlayerCards()
+        {
+            return playerCards;
+        }
+
+        public void addToPlayerCards(Card newCard)
+        {
+            playerCards.AddToCollection(newCard);
+        }
     }
 }
