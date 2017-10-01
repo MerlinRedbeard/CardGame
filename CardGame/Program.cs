@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Threading;
 
 namespace CardGame
 {
@@ -25,7 +22,40 @@ namespace CardGame
             //PokerDeckTest();
             //TestOutKeyword();
             //HandNotFound();
+            PlayTextWarGame();
 
+        }
+
+        private static void PlayTextWarGame()
+        {
+            Console.WriteLine("How many players?");
+            int numPlayers = 2;
+            //Int32.TryParse(Console.ReadLine(), out numPlayers);
+            //while (numPlayers == 0)
+            //{
+            //    Console.WriteLine("Invalid Number of players, please try again");
+            //    Int32.TryParse(Console.ReadLine(), out numPlayers);
+            //}
+            Game testGame = new WarGame("Test Game", "Basic War with Ace High");
+
+            //string playerName;
+            for (int i = 1; i <= numPlayers; i++)
+            {
+                //Console.WriteLine("Player {0} name:", i);
+                //playerName = Console.ReadLine().Trim();
+                //if (playerName != "")
+                //{
+                //    testGame.AddPlayer(new Player(playerName));
+                testGame.AddPlayer(new Player());
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Invalid Player Name.");
+                //    i--;
+                //}
+            }
+
+            testGame.PlayTextGame();
         }
 
         private static void CardTest()

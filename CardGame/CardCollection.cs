@@ -76,7 +76,8 @@ namespace CardGame
         /// <returns></returns>
         public virtual bool IsEmpty()
         {
-            if (NumCardsInCollection() == 0)
+            if (NumCardsInCollection() < 20)
+            //if (NumCardsInCollection() == 0)
             {
                 return true;
             }

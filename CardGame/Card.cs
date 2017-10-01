@@ -39,9 +39,10 @@ namespace CardGame
             }
         }
      
-        public void SetFace(Face toShow)
+        public Card SetFace(Face toShow)
         {
             showing = toShow;
+            return this;
         }
 
     }
