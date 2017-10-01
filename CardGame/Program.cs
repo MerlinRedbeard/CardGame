@@ -179,6 +179,12 @@ namespace CardGame
             {
                 Console.WriteLine("ERROR: Card Drawn from Empty Deck: {0}",test.GetVisibleDisplayName());//draw on empty deck test
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Adding a collection to an existing Deck...");
+            Deck secondDeck = new Deck("Second deck", testCards);
+            myDeck.AddToCollection(secondDeck);
+            DisplayCards(myDeck);
         }
 
         private static void PokerDeckTest()

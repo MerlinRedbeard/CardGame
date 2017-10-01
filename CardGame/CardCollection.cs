@@ -16,6 +16,16 @@ namespace CardGame
         /// <param name="toAdd"></param>
         abstract public void AddToCollection(Card toAdd);
 
+        virtual public void AddToCollection(CardCollection newCollection)
+        {
+            Card[] newCards = newCollection.CardsInCollection();
+
+            for (int i = 0; i < newCollection.NumCardsInCollection(); i++)
+            {
+                this.AddToCollection(newCards[i]);
+            }
+        }
+
         /// <summary>
         /// Remove a Card from the CardCollection
         /// </summary>
@@ -60,6 +70,5 @@ namespace CardGame
 
             return false;
         }
-
     }
 }
