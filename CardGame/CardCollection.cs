@@ -46,5 +46,20 @@ namespace CardGame
         /// </summary>
         /// <returns>Top Card object of CardCollection</returns>
         abstract public Card Display();
+
+        /// <summary>
+        /// Returns True if the collection is empty.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool isEmpty()
+        {
+            if (NumCardsInCollection() == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }
