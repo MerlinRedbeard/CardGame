@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WarDeck.cs" />
+    <Compile Include="GameOption.cs" />
     <Compile Include="WarGame.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Card.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandardCard.cs" />
+    <Compile Include="WarGameOption.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

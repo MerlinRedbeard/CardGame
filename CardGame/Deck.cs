@@ -17,7 +17,7 @@ namespace CardGame
             cards = new LinkedList<Card>(addCards);
         }
 
-        public void Shuffle()
+        public virtual void Shuffle()
         {
             Card[] temp = new Card[cards.Count];
             cards.CopyTo(temp, 0);
@@ -65,11 +65,6 @@ namespace CardGame
             return null;
         }
 
-        public override void AddToCollection(Card toAdd)
-        {
-            cards.AddFirst(toAdd);
-        }
-
         public override void RemoveFromCollection(Card toRemove)
         {
             if (cards.Count > 0)
@@ -92,6 +87,16 @@ namespace CardGame
         public override int NumCardsInCollection()
         {
             return cards.Count;
+        }
+
+        public override void AddToCollection(Card toAdd)
+        {
+            cards.AddFirst(toAdd);
+        }
+
+        public virtual void AddToBottom(Card toAdd)
+        {
+            cards.AddLast(toAdd);
         }
     }
 }

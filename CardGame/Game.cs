@@ -17,6 +17,8 @@ namespace CardGame
 
         public Game(string GameName, string RulesToDisplay)
         {
+            players = new List<Player>();
+            gameDecks = new List<Deck>();
             rules = RulesToDisplay;
             gameName = GameName;
         }
@@ -43,14 +45,34 @@ namespace CardGame
         public virtual string ReadRules() => rules;
 
         /// <summary>
-        /// Displays current game configuration, including additional options selected
+        /// Gets the current game configuration
         /// </summary>
-        public abstract string DisplayConfig();
+        /// <returns>string[] representing current GameOption choices</returns>
+        public abstract string[] GetConfig();
 
         /// <summary>
-        /// Plays game with current configuration/players
+        /// Displays appropriate GameOption choices
+        /// </summary>
+        /// <returns>string of choices for GameOptions to set</returns>
+        public abstract string[] GetGameOptions();
+
+        /// <summary>
+        /// Plays console game with current configuration/players
         /// </summary>
         /// <exception cref="System.ArgumentNullException">When one or more mandatory game mechanics is not initialized.  Should be handled in game.</exception>
-        public abstract void PlayGame();
+        public abstract void PlayTextGame();
+
+        /// <summary>
+        /// Plays GUI game with current configuration/players
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">When one or more mandatory game mechanics is not initialized.  Should be handled in game.</exception>
+        public abstract void PlayGUIGame();
+
+        /// <summary>
+        /// Applies a specific game option.  Must be used before game start.
+        /// </summary>
+        /// <param name="gameOption">Game option to be set</param>
+        /// <returns>true if option was set successfully</returns>
+        public abstract bool SetGameOption(GameOption gameOption);
     }
 }
