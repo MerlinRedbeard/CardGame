@@ -59,10 +59,10 @@ namespace CardGame
             }
 
             //Get Game Options
-            string userInput = "PLAY_GAME";
+            string userInput = "PLAY";
             string[] config;
-            while (userInput != "PLAY_GAME") {
-                //Console.WriteLine("Please select the game options.  Select \"Play\" when you are ready to play the game.");
+            while (userInput != "PLAY") {
+                Console.WriteLine("Please select the game options.  Select \"Play\" when you are ready to play the game.");
                 Console.WriteLine("Current War Game Configuration:");
                 config = GetConfig();
                 foreach(string currentConfig in config)
@@ -75,7 +75,8 @@ namespace CardGame
                 Console.WriteLine("Type the name of a game option if you wish to toggle that option");
 
                 config = GetGameOptions();
-                //userInput = Console.ReadLine().ToUpper().Trim().Replace("  "," ").Replace(' ','_');
+                Console.ReadLine();
+                userInput = Console.ReadLine().ToUpper().Trim().Replace("  "," ").Replace(' ','_');
                 switch (userInput)
                 {
                     case "HELP":
@@ -129,17 +130,18 @@ namespace CardGame
                 players[i].AddPlayerCollection(new Hand("Play"));
             }
             int playerCount = players.Count;
-            CardCollection cardsAtRisk = new Hand("cardsAtRisk");
+            CardCollection cardsAtRisk;
             Player winner;
             StandardCard[] inPlay;
             // finally, play the game
             while (playerCount > 1)
             {
+                cardsAtRisk = new Hand("cardsAtRisk");
                 inPlay = new StandardCard[playerCount];
                 //Display Player names
                 for (int i = 0; i < playerCount; i++)
                 {
-                    Console.Write("{0}\t", players[i]);
+                    Console.Write("{0}\t", players[i].GetName());
                 }
                 Console.WriteLine();
                 //Display number of cards in each player's deck
@@ -195,8 +197,8 @@ namespace CardGame
                         Console.WriteLine("Player {0} Eliminated", players[i].GetName());
                         RemovePlayer(players[i]);
                     }
+                    playerCount = players.Count;
                 }
-                playerCount = players.Count;
             }
         }
 
@@ -220,9 +222,11 @@ namespace CardGame
             };
 
             int winnerIndex = 0;
+            int cardCompare;
             for (int i = 1; i < playersInBattle.Count; i++)
             {
-                if (CompareCard(onTable[i],onTable[winnerIndex]) < 0)
+                cardCompare = CompareCard(onTable[i], onTable[winnerIndex]);
+                if (cardCompare < 0)
                 {
                     winnerIndex = i;
                     warringPlayers = new List<Player>
@@ -230,7 +234,7 @@ namespace CardGame
                         playersInBattle[i]
                     };
                 }
-                else if (CompareCard(onTable[i], onTable[winnerIndex]) == 0)
+                else if (cardCompare == 0)
                 {
                     warringPlayers.Add(playersInBattle[i]);
                 }
@@ -246,11 +250,11 @@ namespace CardGame
                     {
                         temp = (StandardCard)((Deck)atWar.GetPlayerCollection()).DrawTopCard();
                         cardsWon.AddToCollection(temp);
-                        atWar.AddToPlayerCollection(temp, "Play");
+                        atWar.AddToPlayerCollection(temp.SetFace(Card.Face.BACK), "Play");
 
                         temp = (StandardCard)((Deck)atWar.GetPlayerCollection()).DrawTopCard();
                         cardsWon.AddToCollection(temp);
-                        atWar.AddToPlayerCollection(temp, "Play");
+                        atWar.AddToPlayerCollection(temp.SetFace(Card.Face.BACK), "Play");
                     }
                     else
                     {
@@ -285,7 +289,7 @@ namespace CardGame
                 }
             }
             //Default of ACE_LOW
-            return a_Value.CompareTo(b_Value);
+            return b_Value.CompareTo(a_Value);
         }
     }
 }

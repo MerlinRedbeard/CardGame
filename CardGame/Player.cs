@@ -8,15 +8,17 @@ namespace CardGame
         private string name;
         private List<CardCollection> playerCards;
 
-        public Player() : this(string.Concat("Player ", DateTime.Now.Ticks.ToString("####"))) { }
+        public Player() : this(string.Concat("Player ", (new Random((int)DateTime.Now.Ticks)).Next(9999))) { }
 
         public Player(string newName) : this(newName,new Hand()) { }
 
         public Player(string newName, CardCollection startingCards)
         {
             name = newName;
-            playerCards = new List<CardCollection>();
-            playerCards.Add(startingCards);
+            playerCards = new List<CardCollection>
+            {
+                startingCards
+            };
         }
 
         public void SetName(String newName)
