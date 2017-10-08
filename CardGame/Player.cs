@@ -31,10 +31,9 @@ namespace CardGame
             return name;
         }
 
-        public void SetPlayerCollection(CardCollection newCollection)
+        public void SetPlayerCollections(CardCollection[] newCollection)
         {
-            playerCards = new List<CardCollection>();
-            playerCards.Add(newCollection);
+            playerCards = new List<CardCollection>(newCollection);
         }
 
         public void AddPlayerCollection(CardCollection newCollection)
@@ -57,7 +56,7 @@ namespace CardGame
                 }
             }
 
-            throw new Exception(message: "Player " + name + " does not have a collection of cards named " + collectionName);
+            return null;
         }
 
         public void AddToPlayerCollection(Card newCard)

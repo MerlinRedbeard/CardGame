@@ -29,30 +29,28 @@ namespace CardGame
         private static void PlayTextWarGame()
         {
             Console.WriteLine("How many players?");
-            int numPlayers = 2;
-            //Int32.TryParse(Console.ReadLine(), out numPlayers);
-            //while (numPlayers == 0)
-            //{
-            //    Console.WriteLine("Invalid Number of players, please try again");
-            //    Int32.TryParse(Console.ReadLine(), out numPlayers);
-            //}
+            Int32.TryParse(Console.ReadLine(), out int numPlayers);
+            while (numPlayers == 0)
+            {
+                Console.WriteLine("Invalid Number of players, please try again");
+                Int32.TryParse(Console.ReadLine(), out numPlayers);
+            }
             Game testGame = new WarGame("Test Game", "Basic War with Ace High");
 
-            //string playerName;
+            string playerName;
             for (int i = 1; i <= numPlayers; i++)
             {
-                //Console.WriteLine("Player {0} name:", i);
-                //playerName = Console.ReadLine().Trim();
-                //if (playerName != "")
-                //{
-                //    testGame.AddPlayer(new Player(playerName));
-                testGame.AddPlayer(new Player());
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Invalid Player Name.");
-                //    i--;
-                //}
+                Console.WriteLine("Player {0} name:", i);
+
+                playerName = Console.ReadLine().Trim();
+                if (!string.IsNullOrEmpty(playerName))
+                {
+                    testGame.AddPlayer(new Player(playerName));
+                }
+                else
+                {
+                    testGame.AddPlayer(new Player("Player "+i));
+                }
             }
 
             testGame.PlayTextGame();

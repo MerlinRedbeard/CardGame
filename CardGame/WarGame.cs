@@ -9,8 +9,10 @@ namespace CardGame
 
         public WarGame(string GameName, string RulesToDisplay) : base(GameName, RulesToDisplay)
         {
-            gameOptions = new List<WarGameOption>();
-            gameOptions.Add(WarGameOption.ACE_HIGH);
+            gameOptions = new List<WarGameOption>
+            {
+                WarGameOption.ACE_HIGH
+            };
         }
 
         public override bool SetGameOption(GameOption optionToSet)
@@ -59,7 +61,7 @@ namespace CardGame
             }
 
             //Get Game Options
-            string userInput = "PLAY";
+            string userInput = "";
             string[] config;
             while (userInput != "PLAY") {
                 Console.WriteLine("Please select the game options.  Select \"Play\" when you are ready to play the game.");
@@ -75,7 +77,6 @@ namespace CardGame
                 Console.WriteLine("Type the name of a game option if you wish to toggle that option");
 
                 config = GetGameOptions();
-                Console.ReadLine();
                 userInput = Console.ReadLine().ToUpper().Trim().Replace("  "," ").Replace(' ','_');
                 switch (userInput)
                 {
@@ -126,8 +127,7 @@ namespace CardGame
 
             for (int i = 0; i < players.Count; i++)
             {
-                players[i].SetPlayerCollection(playerDecks[i]);
-                players[i].AddPlayerCollection(new Hand("Play"));
+                players[i].SetPlayerCollections(new CardCollection[] { playerDecks[i], new Hand("Play") });
             }
             int playerCount = players.Count;
             CardCollection cardsAtRisk;
@@ -196,10 +196,26 @@ namespace CardGame
                     {
                         Console.WriteLine("Player {0} Eliminated", players[i].GetName());
                         RemovePlayer(players[i]);
+                        Console.ReadLine();
                     }
-                    playerCount = players.Count;
+                    if(players.Count < playerCount)
+                    {
+                        playerCount = players.Count;
+                        i--;
+                    }
+                    
                 }
             }
+
+            if(playerCount > 0)
+            {
+                Console.WriteLine("{0} wins!", players[0].GetName());
+            }
+            else
+            {
+                Console.WriteLine("Tie! No one wins");
+            }
+            Console.ReadLine();
         }
 
         public override void PlayGUIGame()
@@ -239,28 +255,33 @@ namespace CardGame
                     warringPlayers.Add(playersInBattle[i]);
                 }
             }
-            Player winner = players[winnerIndex];
+            Player winner = playersInBattle[winnerIndex];
             StandardCard temp;
             //This logic will need to be upgraded
             if (warringPlayers.Count > 1)
             {
-                foreach(Player atWar in warringPlayers)
+                for(int i=0;i<warringPlayers.Count;i++)
+                //foreach(Player atWar in warringPlayers)
                 {
-                    if (atWar.GetPlayerCollection().NumCardsInCollection() > 2)
+                    if (warringPlayers[i].GetPlayerCollection().NumCardsInCollection() > 2)
                     {
-                        temp = (StandardCard)((Deck)atWar.GetPlayerCollection()).DrawTopCard();
+                        temp = (StandardCard)((Deck)warringPlayers[i].GetPlayerCollection()).DrawTopCard().SetFace(Card.Face.BACK);
                         cardsWon.AddToCollection(temp);
-                        atWar.AddToPlayerCollection(temp.SetFace(Card.Face.BACK), "Play");
+                        warringPlayers[i].AddToPlayerCollection(temp, "Play");
 
-                        temp = (StandardCard)((Deck)atWar.GetPlayerCollection()).DrawTopCard();
+                        temp = (StandardCard)((Deck)warringPlayers[i].GetPlayerCollection()).DrawTopCard().SetFace(Card.Face.BACK);
                         cardsWon.AddToCollection(temp);
-                        atWar.AddToPlayerCollection(temp.SetFace(Card.Face.BACK), "Play");
+                        warringPlayers[i].AddToPlayerCollection(temp, "Play");
                     }
                     else
                     {
-                        cardsWon.AddToCollection(atWar.GetPlayerCollection());
-                        atWar.SetPlayerCollection(new Deck("Losing deck",new Card[0]));
-                        warringPlayers.Remove(atWar);
+                        cardsWon.AddToCollection(warringPlayers[i].GetPlayerCollection());
+                        warringPlayers[i].SetPlayerCollections(
+                            new CardCollection[] {
+                                new Deck("Losing deck",new Card[0]),
+                                warringPlayers[i].GetPlayerCollection("Play")
+                            });
+                        warringPlayers.Remove(warringPlayers[i]);
                     }
                 }
                 if(warringPlayers.Count > 1)
