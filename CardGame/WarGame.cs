@@ -6,6 +6,9 @@ namespace CardGame
     class WarGame : Game
     {
         private List<WarGameOption> gameOptions;
+        private int numberOfTurns = 0;
+        private int numberOfWars = 0;
+        private bool playerWasEliminated = false;
 
         public WarGame(string GameName, string RulesToDisplay) : base(GameName, RulesToDisplay)
         {
@@ -136,18 +139,23 @@ namespace CardGame
             // finally, play the game
             while (playerCount > 1)
             {
+                numberOfTurns++;
+                
                 cardsAtRisk = new Hand("cardsAtRisk");
                 inPlay = new StandardCard[playerCount];
+
+                Console.WriteLine("Turn number {0}", numberOfTurns);
+                
                 //Display Player names
                 for (int i = 0; i < playerCount; i++)
                 {
-                    Console.Write("{0}\t", players[i].GetName());
+                    Console.Write("{0,15}\t", players[i].GetName());
                 }
                 Console.WriteLine();
                 //Display number of cards in each player's deck
                 for (int i = 0; i < playerCount; i++)
                 {
-                    Console.Write("Cards: {0}\t", players[i].GetPlayerCollection().NumCardsInCollection());
+                    Console.Write("Cards: {0,8}\t", players[i].GetPlayerCollection().NumCardsInCollection());
                 }
                 Console.WriteLine();
                 
@@ -178,17 +186,40 @@ namespace CardGame
                         {
                             toDisplay = players[i].GetPlayerCollection("Play").CardsInCollection()[0];
                             isEmpty = false;
-                            Console.Write("{0}\t", toDisplay.GetVisibleDisplayName());
+                            Console.Write("{0,15}\t", toDisplay.GetVisibleDisplayName());
                             players[i].GetPlayerCollection("Play").RemoveFromCollection(toDisplay);
                         }
                         else
                         {
-                            Console.Write("\t\t");
+                            Console.Write("{0,15}\t","");
                         }
                     }
                     Console.WriteLine();
                 }
                 Console.WriteLine("------------------------------------------");
+                System.Threading.Thread.Sleep(100);
+
+                // See if we want to continue watching this
+                if (numberOfTurns % 250 == 0)
+                {
+                    if (playerWasEliminated)
+                    {
+                        // We're going to keep going
+                        playerWasEliminated = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("It's been {0} turns.\n", numberOfTurns);
+                        Console.WriteLine("Do you want to continue? (Y/N)");
+
+                        string timeToQuit = Console.ReadLine().ToUpper();
+                         
+                        if (timeToQuit == "N")
+                        {
+                            return;
+                        }
+                    }
+                }
 
                 for (int i = 0; i < playerCount; i++)
                 {
@@ -196,6 +227,7 @@ namespace CardGame
                     {
                         Console.WriteLine("Player {0} Eliminated", players[i].GetName());
                         RemovePlayer(players[i]);
+                        playerWasEliminated = true;
                         Console.ReadLine();
                     }
                     if(players.Count < playerCount)
@@ -215,6 +247,10 @@ namespace CardGame
             {
                 Console.WriteLine("Tie! No one wins");
             }
+
+            Console.WriteLine("Number of turns: {0}", numberOfTurns);
+            Console.WriteLine("Number of wars: {0}", numberOfWars);
+
             Console.ReadLine();
         }
 
@@ -260,6 +296,8 @@ namespace CardGame
             //This logic will need to be upgraded
             if (warringPlayers.Count > 1)
             {
+                numberOfWars++;
+
                 for(int i=0;i<warringPlayers.Count;i++)
                 //foreach(Player atWar in warringPlayers)
                 {

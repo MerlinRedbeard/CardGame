@@ -30,7 +30,7 @@ namespace CardGame
         {
             Console.WriteLine("How many players?");
             Int32.TryParse(Console.ReadLine(), out int numPlayers);
-            while (numPlayers == 0)
+            while (numPlayers < 2)
             {
                 Console.WriteLine("Invalid Number of players, please try again");
                 Int32.TryParse(Console.ReadLine(), out numPlayers);
