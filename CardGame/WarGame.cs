@@ -65,45 +65,61 @@ namespace CardGame
 
             //Get Game Options
             string userInput = "";
-            string[] config;
-            while (userInput != "PLAY") {
-                Console.WriteLine("Please select the game options.  Select \"Play\" when you are ready to play the game.");
-                Console.WriteLine("Current War Game Configuration:");
-                config = GetConfig();
-                foreach(string currentConfig in config)
-                {
-                    Console.WriteLine("\t-{0}",currentConfig);
-                }
-
-                Console.WriteLine("Type \"Play\" to play with the current configuration");
-                Console.WriteLine("Type \"Help\" for a list of game options to set");
-                Console.WriteLine("Type the name of a game option if you wish to toggle that option");
-
-                config = GetGameOptions();
-                userInput = Console.ReadLine().ToUpper().Trim().Replace("  "," ").Replace(' ','_');
+            string[] options;
+            string[] currentOptions;
+            WarGameOption optionToSet;
+            Console.Clear();
+            while (userInput != "PLAY")
+            {
+                Console.WriteLine();
                 switch (userInput)
                 {
                     case "HELP":
                         Console.WriteLine("Available Game Options:");
-                        foreach(string currentConfig in config)
+                        options = GetGameOptions();
+                        foreach (string config in options)
                         {
-                            Console.WriteLine("\t-{0}", currentConfig);
+                            Console.WriteLine("\t{0}", config);
                         }
+                        Console.WriteLine();
                         break;
                     case "PLAY":
                         break;
+                    case "":
+                        break;
+                    case null:
+                        break;
                     default:
-                        if (SetGameOption(WarGameOption.GetOption(userInput)))
+                        optionToSet = (WarGameOption)WarGameOption.GetOption(userInput);
+                        if (optionToSet != null)
                         {
+                            SetGameOption(optionToSet);
                             Console.WriteLine("Option {0} set successfully", userInput);
-                            break;
+                            Console.WriteLine();
                         }
                         else
                         {
-                            Console.WriteLine("Invalid Option");
+                            Console.WriteLine("Invalid option. Please try again.");
+                            Console.WriteLine();
                             goto case "HELP";
                         }
+                        break;
                 }
+                Console.WriteLine("Please select the game options.  Select \"Play\" when you are ready to play the game.");
+                Console.WriteLine();
+                Console.WriteLine("Current War Game Configuration:");
+                currentOptions = GetConfig();
+                foreach(string currentConfig in currentOptions)
+                {
+                    Console.WriteLine("\t-{0}",currentConfig);
+                }
+                Console.WriteLine();
+                Console.WriteLine("Type \"Play\" to play with the current configuration");
+                Console.WriteLine("Type \"Help\" for a list of game options to set");
+                Console.WriteLine("Type the name of a game option if you wish to toggle that option");
+                Console.WriteLine();
+                userInput = Console.ReadLine().ToUpper().Trim().Replace("  ", " ").Replace(' ', '_');
+                Console.Clear();
             }
 
             // create our original deck, without jokers
@@ -153,9 +169,11 @@ namespace CardGame
                 }
                 Console.WriteLine();
                 //Display number of cards in each player's deck
+                string display = "";
                 for (int i = 0; i < playerCount; i++)
                 {
-                    Console.Write("Cards: {0,8}\t", players[i].GetPlayerCollection().NumCardsInCollection());
+                    display = "Cards: " + players[i].GetPlayerCollection().NumCardsInCollection();
+                    Console.Write(display.PadLeft(15)+"\t");
                 }
                 Console.WriteLine();
                 
@@ -165,10 +183,9 @@ namespace CardGame
                 {
                     if (originalPlayer.Equals(winner))
                     {
-
                         foreach(Card won in cardsWon)
                         {
-                            ((Deck)originalPlayer.GetPlayerCollection()).AddToBottom(won.SetFace(Card.Face.BACK));
+                            ((Deck)originalPlayer.GetPlayerCollection()).AddToCollection(won.SetFace(Card.Face.BACK),CardCollection.CollectionLocation.BOTTOM);
                         }
                         break;
                     }
@@ -186,7 +203,16 @@ namespace CardGame
                         {
                             toDisplay = players[i].GetPlayerCollection("Play").CardsInCollection()[0];
                             isEmpty = false;
-                            Console.Write("{0,15}\t", toDisplay.GetVisibleDisplayName());
+                            
+                            if (players[i].Equals(winner))
+                            {
+                                Console.Write("{0,14}*", toDisplay.GetVisibleDisplayName());
+                            }
+                            else
+                            {
+                                Console.Write("{0,15}", toDisplay.GetVisibleDisplayName());
+                            }
+                            Console.Write("\t");
                             players[i].GetPlayerCollection("Play").RemoveFromCollection(toDisplay);
                         }
                         else
@@ -214,7 +240,7 @@ namespace CardGame
 
                         string timeToQuit = Console.ReadLine().ToUpper();
                          
-                        if (timeToQuit == "N")
+                        if (timeToQuit[0] == 'N')
                         {
                             return;
                         }
@@ -225,7 +251,7 @@ namespace CardGame
                 {
                     if (players[i].GetPlayerCollection().IsEmpty())
                     {
-                        Console.WriteLine("Player {0} Eliminated", players[i].GetName());
+                        Console.WriteLine("{0} Eliminated", players[i].GetName());
                         RemovePlayer(players[i]);
                         playerWasEliminated = true;
                         Console.ReadLine();
@@ -292,6 +318,8 @@ namespace CardGame
                 }
             }
             Player winner = playersInBattle[winnerIndex];
+            //Create copy of top contenders for if all are eliminated, commented out until requisite code is complete
+            //List<Player> possibleWinners = warringPlayers;
             StandardCard temp;
             //This logic will need to be upgraded
             if (warringPlayers.Count > 1)
@@ -314,17 +342,44 @@ namespace CardGame
                     else
                     {
                         cardsWon.AddToCollection(warringPlayers[i].GetPlayerCollection());
+                        warringPlayers[i].AddToPlayerCollection(warringPlayers[i].GetPlayerCollection().CardsInCollection(),"Play");
                         warringPlayers[i].SetPlayerCollections(
                             new CardCollection[] {
                                 new Deck("Losing deck",new Card[0]),
                                 warringPlayers[i].GetPlayerCollection("Play")
                             });
                         warringPlayers.Remove(warringPlayers[i]);
+                        i--;
                     }
                 }
-                if(warringPlayers.Count > 1)
+                if(warringPlayers.Count > 0)
                 {
                     winner = FindWinner(warringPlayers, ref cardsWon);
+                }
+                else
+                {
+                    //What should happen if the players tied for highest don't have enough cards to complete a war?
+
+
+                    //for(int i=0;i<playersInBattle.Count;i++)
+                    //{
+                    //    if (!possibleWinners.Contains(playersInBattle[i]) && onTable[i] != null)
+                    //    {
+                    //        playersInBattle[i].AddToPlayerCollection(onTable[i]);
+                    //        onTable[i] = null;
+                    //    }
+                    //    else
+                    //    {
+                    //        playersInBattle.RemoveAt(i);
+                    //        i--;
+                    //    }
+                    //}
+                    
+                    //foreach(Player tryAgain in playersInBattle)
+                    //{
+
+                    //    tryAgain.AddToPlayerCollection(tryAgain.GetPlayerCollection("Play").CardsInCollection())
+                    //}
                 }
             }
 

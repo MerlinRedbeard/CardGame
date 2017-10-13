@@ -33,7 +33,7 @@ namespace CardGame
 
             foreach(FieldInfo fi in fieldInfos)
             {
-                if(fi.IsLiteral && !fi.IsInitOnly)
+                if(!fi.IsLiteral && fi.IsInitOnly)
                 {
                     constants.Add(fi.GetValue(type));
                 }

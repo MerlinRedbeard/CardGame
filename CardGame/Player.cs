@@ -10,7 +10,7 @@ namespace CardGame
 
         public Player() : this(string.Concat("Player ", (new Random((int)DateTime.Now.Ticks)).Next(9999))) { }
 
-        public Player(string newName) : this(newName,new Hand()) { }
+        public Player(string newName) : this(newName, new Hand()) { }
 
         public Player(string newName, CardCollection startingCards)
         {
@@ -59,23 +59,28 @@ namespace CardGame
             return null;
         }
 
-        public void AddToPlayerCollection(Card newCard)
+        public void AddToPlayerCollection(Card newCard,
+            CardCollection.CollectionLocation toWhere = CardCollection.CollectionLocation.BOTTOM)
         {
-            playerCards[0].AddToCollection(newCard);
+            playerCards[0].AddToCollection(newCard,toWhere);
         }
 
-        public void AddToPlayerCollection(Card newCard, string collectionName)
+        public void AddToPlayerCollection(Card newCard, string collectionName,
+            CardCollection.CollectionLocation toWhere = CardCollection.CollectionLocation.BOTTOM)
         {
-            CardCollection hold;
+            AddToPlayerCollection(new Card[] { newCard }, collectionName,toWhere);
+        }
 
-            try
+        public void AddToPlayerCollection(Card[] newCards, string collectionName,
+            CardCollection.CollectionLocation toWhere = CardCollection.CollectionLocation.BOTTOM)
+        {
+            for(int i=0;i<playerCards.Count;i++)
             {
-                hold = GetPlayerCollection(collectionName);
-                hold.AddToCollection(newCard);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                if (playerCards[i].GetDisplayName() == collectionName)
+                {
+                    playerCards[i].AddToCollection(newCards,toWhere);
+                    return;
+                }
             }
         }
     }

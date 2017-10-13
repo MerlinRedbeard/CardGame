@@ -8,34 +8,37 @@ namespace CardGame
 {
     abstract class CardCollection
     {        
+        public enum CollectionLocation { TOP, FRONT, BOTTOM, BACK, SHUFFLE}
+
         public CardCollection() { }
 
         /// <summary>
-        /// Add a Card to the CardCollection
+        /// Adds a given card to a specified location within the collection
         /// </summary>
-        /// <param name="toAdd"></param>
-        abstract public void AddToCollection(Card toAdd);
-
+        /// <param name="toAdd">Card to add</param>
+        /// <param name="toWhere">CollectionLocation to add the Card to</param>
+        abstract public void AddToCollection(Card toAdd, CollectionLocation toWhere = CollectionLocation.TOP);
+        
         /// <summary>
-        /// Add all of the cards in a CardCollection to the current CardCollection.
+        /// Add all of the cards in a CardCollection to the current CardCollection at the given location.  Default location is TOP.
         /// </summary>
-        /// <param name="newCollection"></param>
-        virtual public void AddToCollection(CardCollection newCollection)
+        /// <param name="newCollection">Collection to be added</param>
+        /// <param name="toWhere">Location for Collection to be added.  Defaults to TOP</param>
+        virtual public void AddToCollection(CardCollection newCollection, CollectionLocation toWhere = CollectionLocation.TOP)
         {
-            Card[] newCards = newCollection.CardsInCollection();
-
-            AddToCollection(newCards);
+            AddToCollection(newCollection.CardsInCollection(),toWhere);
         }
 
         /// <summary>
         /// Add all of the cards in a Card array to the current CardCollection.
         /// </summary>
-        /// <param name="newCollection"></param>
-        virtual public void AddToCollection(Card[] newCards)
+        /// <param name="newCollection">Array of Card objects to add to the current CardCollection</param>
+        /// <param name="toWhere">Location in CardCollection to add Card objects</param>
+        virtual public void AddToCollection(Card[] newCards,CollectionLocation toWhere = CollectionLocation.TOP)
         {
             for (int i = 0; i < newCards.Length; i++)
             {
-                this.AddToCollection(newCards[i]);
+                this.AddToCollection(newCards[i],toWhere);
             }
         }
 

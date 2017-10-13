@@ -35,7 +35,15 @@ namespace CardGame
                 Console.WriteLine("Invalid Number of players, please try again");
                 Int32.TryParse(Console.ReadLine(), out numPlayers);
             }
-            Game testGame = new WarGame("Test Game", "Basic War with Ace High");
+            string rules = "The deck is divided evenly amongst all players, dealt one at a time, face down.\n\n"+
+                "Each player turns up a card at the same time and the player "+
+                "with the highest card takes all cards and puts them, face down, on the bottom of their stack.\n\n"+
+                "If the cards are the same rank, it is War. Each player places two additional cards face down and"+
+                " one card face up. The player with the highest new face up card takes all piles. "+
+                "If the turned-up cards are again the same rank, each player places another two cards face down "+
+                "and turns another card face up. This continues until one player has a higher card than all other players.\n\n"+
+                "The game ends when one player has acquired all cards";
+            Game testGame = new WarGame("Test Game", rules);
 
             string playerName;
             for (int i = 1; i <= numPlayers; i++)

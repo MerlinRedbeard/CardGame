@@ -89,33 +89,25 @@ namespace CardGame
             return cards.Count;
         }
 
-        public override void AddToCollection(Card toAdd)
+        public override void AddToCollection(Card toAdd,CollectionLocation toWhere = CollectionLocation.TOP)
         {
-            cards.AddFirst(toAdd);
-        }
-
-        /// <summary>
-        /// Add all of the cards in a CardCollection to the bottom of this CardCollection.
-        /// </summary>
-        /// <param name="newCollection"></param>
-        virtual public void AddToBottom(CardCollection newCollection)
-        {
-            Card[] newCards = newCollection.CardsInCollection();
-
-            AddToBottom(newCards);
-        }
-
-        virtual public void AddToBottom(Card[] newCards)
-        {
-            for (int i = 0; i < newCards.Length; i++)
+            switch (toWhere)
             {
-                AddToBottom(newCards[i]);
-            }
-        }
-
-        public virtual void AddToBottom(Card toAdd)
-        {
-            cards.AddLast(toAdd);
+                case CollectionLocation.BACK:
+                    cards.AddLast(toAdd);
+                    break;
+                case CollectionLocation.BOTTOM:
+                    goto case CollectionLocation.BACK;
+                case CollectionLocation.TOP:
+                    cards.AddFirst(toAdd);
+                    break;
+                case CollectionLocation.FRONT:
+                    goto case CollectionLocation.TOP;
+                case CollectionLocation.SHUFFLE:
+                    cards.AddFirst(toAdd);
+                    Shuffle();
+                    break;
+            } 
         }
     }
 }

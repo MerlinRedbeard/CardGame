@@ -9,7 +9,7 @@ namespace CardGame
     class Hand : CardCollection
     {
         private string name;
-        private List<Card> cardsInHand;
+        private LinkedList<Card> cardsInHand;
 
         public string Name {set => name = value; }
 
@@ -20,12 +20,26 @@ namespace CardGame
         public Hand(string handName,Card[] startingHand)
         {
             Name = handName;
-            cardsInHand = new List<Card>(startingHand);
+            cardsInHand = new LinkedList<Card>(startingHand);
         }
 
-        public override void AddToCollection(Card toAdd)
+        public override void AddToCollection(Card toAdd, CollectionLocation toWhere = CollectionLocation.TOP)
         {
-            cardsInHand.Add(toAdd);
+            switch (toWhere)
+            {
+                case CollectionLocation.BACK:
+                    cardsInHand.AddLast(toAdd);
+                    break;
+                case CollectionLocation.BOTTOM:
+                    goto case CollectionLocation.BACK;
+                case CollectionLocation.TOP:
+                    cardsInHand.AddFirst(toAdd);
+                    break;
+                case CollectionLocation.FRONT:
+                    goto case CollectionLocation.TOP;
+                default:
+                    goto case CollectionLocation.TOP;
+            }
         }
 
         public override void RemoveFromCollection(Card toRemove)
@@ -54,7 +68,7 @@ namespace CardGame
 
         public override Card Display()
         {
-            return cardsInHand[0];
+            return cardsInHand.First.Value;
         }
 
         public override int NumCardsInCollection()
