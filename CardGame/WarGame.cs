@@ -7,9 +7,9 @@ namespace CardGame
     {
         private List<WarGameOption> gameOptions;
         private int numberOfTurns = 0;
+        private int turnsSinceLastElimination = 0;
         private int numberOfWars = 0;
-        private bool playerWasEliminated = false;
-
+     
         public WarGame(string GameName, string RulesToDisplay) : base(GameName, RulesToDisplay)
         {
             gameOptions = new List<WarGameOption>
@@ -156,6 +156,7 @@ namespace CardGame
             while (playerCount > 1)
             {
                 numberOfTurns++;
+                turnsSinceLastElimination++;
                 
                 cardsAtRisk = new Hand("cardsAtRisk");
                 inPlay = new StandardCard[playerCount];
@@ -226,24 +227,16 @@ namespace CardGame
                 System.Threading.Thread.Sleep(100);
 
                 // See if we want to continue watching this
-                if (numberOfTurns % 250 == 0)
+                if (turnsSinceLastElimination % 250 == 0)
                 {
-                    if (playerWasEliminated)
-                    {
-                        // We're going to keep going
-                        playerWasEliminated = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("It's been {0} turns.\n", numberOfTurns);
-                        Console.WriteLine("Do you want to continue? (Y/N)");
+                    Console.WriteLine("It's been {0} turns.\n", numberOfTurns);
+                    Console.WriteLine("Do you want to continue? (Y/N)");
 
-                        string timeToQuit = Console.ReadLine().ToUpper();
+                    string timeToQuit = Console.ReadLine().ToUpper();
                          
-                        if (timeToQuit[0] == 'N')
-                        {
-                            return;
-                        }
+                    if (timeToQuit[0] == 'N')
+                    {
+                        return;
                     }
                 }
 
@@ -253,8 +246,12 @@ namespace CardGame
                     {
                         Console.WriteLine("{0} Eliminated", players[i].GetName());
                         RemovePlayer(players[i]);
-                        playerWasEliminated = true;
-                        Console.ReadLine();
+                        turnsSinceLastElimination = 0;
+
+                        if (players.Count != 0)
+                        {
+                            Console.ReadLine();
+                        }
                     }
                     if(players.Count < playerCount)
                     {

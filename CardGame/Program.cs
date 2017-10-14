@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace CardGame
 {
@@ -9,11 +10,38 @@ namespace CardGame
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            // Set default options
+            bool guiMode = false;
+
+            // What option did the user enter?
+            for (int i = 0; i < args.Length; i++)
+            {
+                switch (args[i].ToUpper())
+                {
+                    case "GUI":
+                        guiMode = true;
+                        break;
+                    case "TEXT":
+                        guiMode = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option \"{0}\"", args[i]);
+                        break;
+                }
+            }
+
+            if (guiMode)
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new WarForm());
+            }
+            else
+            {
+                PlayTextWarGame();
+            }
 
             //CardTest();
             //DeckTest();
@@ -22,7 +50,6 @@ namespace CardGame
             //PokerDeckTest();
             //TestOutKeyword();
             //HandNotFound();
-            PlayTextWarGame();
 
         }
 
