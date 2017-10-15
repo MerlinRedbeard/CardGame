@@ -12,6 +12,10 @@ namespace CardGame
 {
     public partial class WarForm : Form
     {
+        public int returnNumberOfPlayers { get; set; }
+
+        public int returnAceHighLow { get; set; }
+
         public WarForm()
         {
             InitializeComponent();
@@ -20,18 +24,23 @@ namespace CardGame
         private void OptionsButton_Click(object sender, EventArgs e)
         {
             WarOptionForm optionForm = new WarOptionForm();
-            optionForm.ShowDialog();
+            var result = optionForm.ShowDialog();
 
+            if (result == DialogResult.OK)
+            {
+                returnAceHighLow = optionForm.returnAceHighLow;
+            }
         }
 
         private void NumberOfPlayers_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            returnNumberOfPlayers = numberOfPlayers.SelectedIndex + 2;
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void WarForm_Load(object sender, EventArgs e)

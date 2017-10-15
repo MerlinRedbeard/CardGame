@@ -1,17 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace CardGame
 {
     class WarGame : Game
     {
         private List<WarGameOption> gameOptions;
-        private int numberOfTurns = 0;
-        private int turnsSinceLastElimination = 0;
-        private int numberOfWars = 0;
-     
-        public WarGame(string GameName, string RulesToDisplay) : base(GameName, RulesToDisplay)
+        private int numberOfTurns;
+        private int turnsSinceLastElimination;
+        private int numberOfWars;
+
+        private static string rules =
+                "The deck is divided evenly amongst all players, dealt one at a time, face down.\n\n" +
+                "Each player turns up a card at the same time and the player " +
+                "with the winning card takes all cards and puts them, face down, on the bottom of their stack.\n\n" +
+                "If the cards are the same rank, it is War. Each player places two additional cards face down and " +
+                "one card face up. The player with the winning new face up card takes all piles. " +
+                "If the turned-up cards are again the same rank, each player places another two cards face down " +
+                "and turns another card face up. This continues until one player has a winning card.\n\n" +
+                "The game ends when one player has acquired all cards.";
+
+        public WarGame(string GameName) : base(GameName, rules)
         {
+            numberOfTurns = 0;
+            turnsSinceLastElimination = 0;
+            numberOfWars = 0;
+            
             gameOptions = new List<WarGameOption>
             {
                 WarGameOption.ACE_HIGH
@@ -57,6 +72,30 @@ namespace CardGame
 
         public override void PlayTextGame()
         {
+            Console.WriteLine("How many players?");
+            Int32.TryParse(Console.ReadLine(), out int numPlayers);
+            while (numPlayers < 2)
+            {
+                Console.WriteLine("Invalid Number of players, please try again");
+                Int32.TryParse(Console.ReadLine(), out numPlayers);
+            }
+
+            string playerName;
+            for (int i = 1; i <= numPlayers; i++)
+            {
+                Console.WriteLine("Player {0} name:", i);
+
+                playerName = Console.ReadLine().Trim();
+                if (!string.IsNullOrEmpty(playerName))
+                {
+                    AddPlayer(new Player(playerName));
+                }
+                else
+                {
+                    AddPlayer(new Player("Player " + i));
+                }
+            }
+
             // make sure we have at least 2 players
             if (base.players.Count<2)
             {
@@ -279,7 +318,21 @@ namespace CardGame
 
         public override void PlayGUIGame()
         {
-            throw new NotImplementedException();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            WarForm mainForm = new WarForm();
+            int numPlayers = 0;
+
+            var result = mainForm.ShowDialog();
+
+            if (result != DialogResult.OK)
+            {
+                return;
+            }
+
+            numPlayers = mainForm.returnNumberOfPlayers;
+            Console.WriteLine("number of players is {0}", numPlayers);
+            Console.ReadLine();
         }
 
         private Player FindWinner(List<Player> playersInBattle, ref CardCollection cardsWon)

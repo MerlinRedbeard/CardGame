@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace CardGame
 {
@@ -32,15 +30,14 @@ namespace CardGame
                 }
             }
 
+            Game testGame = new WarGame("Test Game");
             if (guiMode)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new WarForm());
+                testGame.PlayGUIGame();
             }
             else
             {
-                PlayTextWarGame();
+                testGame.PlayTextGame();
             }
 
             //CardTest();
@@ -51,44 +48,6 @@ namespace CardGame
             //TestOutKeyword();
             //HandNotFound();
 
-        }
-
-        private static void PlayTextWarGame()
-        {
-            Console.WriteLine("How many players?");
-            Int32.TryParse(Console.ReadLine(), out int numPlayers);
-            while (numPlayers < 2)
-            {
-                Console.WriteLine("Invalid Number of players, please try again");
-                Int32.TryParse(Console.ReadLine(), out numPlayers);
-            }
-            string rules = "The deck is divided evenly amongst all players, dealt one at a time, face down.\n\n"+
-                "Each player turns up a card at the same time and the player "+
-                "with the highest card takes all cards and puts them, face down, on the bottom of their stack.\n\n"+
-                "If the cards are the same rank, it is War. Each player places two additional cards face down and"+
-                " one card face up. The player with the highest new face up card takes all piles. "+
-                "If the turned-up cards are again the same rank, each player places another two cards face down "+
-                "and turns another card face up. This continues until one player has a higher card than all other players.\n\n"+
-                "The game ends when one player has acquired all cards";
-            Game testGame = new WarGame("Test Game", rules);
-
-            string playerName;
-            for (int i = 1; i <= numPlayers; i++)
-            {
-                Console.WriteLine("Player {0} name:", i);
-
-                playerName = Console.ReadLine().Trim();
-                if (!string.IsNullOrEmpty(playerName))
-                {
-                    testGame.AddPlayer(new Player(playerName));
-                }
-                else
-                {
-                    testGame.AddPlayer(new Player("Player "+i));
-                }
-            }
-
-            testGame.PlayTextGame();
         }
 
         private static void CardTest()
